@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.get("/")
 def home():
-    return "Hello! My first Render server is running."
+    return "Welcome! I deployed and updated this server myself."
 
 
 @app.get("/health")
