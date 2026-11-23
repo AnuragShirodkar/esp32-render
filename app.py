@@ -1,11 +1,11 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 
 app = Flask(__name__)
 
 
 @app.get("/")
 def home():
-    return "Welcome! I deployed and updated this server myself."
+    return render_template("index.html")
 
 
 @app.get("/health")
