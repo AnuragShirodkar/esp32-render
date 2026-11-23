@@ -11,3 +11,11 @@ def home():
 @app.get("/health")
 def health():
     return jsonify(status="ok")
+@app.get("/api/status")
+def device_status():
+    return jsonify(
+        device="ESP32",
+        connected=False,
+        led="UNKNOWN",
+        message="Waiting for ESP32 connection"
+    )
