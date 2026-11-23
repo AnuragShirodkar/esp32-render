@@ -22,10 +22,43 @@
 </head>
 <body>
   <h1>My ESP32 Dashboard</h1>
+
   <div class="card">
-    <h2>Server is running</h2>
-    <p>I created this webpage and deployed it using GitHub and Render.</p>
-    <p>ESP32 connection: not configured yet.</p>
+    <p>Device: <strong id="device">—</strong></p>
+    <p>Connection: <strong id="connection">—</strong></p>
+    <p>LED: <strong id="led">—</strong></p>
+    <p id="message" role="status">Loading server data...</p>
   </div>
+
+  <script>
+    async function updateStatus() {
+      try {
+        const response = await fetch("/api/status", {
+          cache: "no-store"
+        });
+
+        if (!response.ok) {
+          throw new Error("Status request failed");
+        }
+
+        const data = await response.json();
+
+        document.getElementById("device").textContent = data.device;
+        document.getElementById("connection").textContent =
+          data.connected ? "Online" : "Offline";
+        document.getElementById("led").textContent = data.led;
+        document.getElementById("message").textContent = data.message;
+      } catch (error) {
+        document.getElementById("connection").textContent = "Unknown";
+        document.getElementById("led").textContent = "—";
+        document.getElementById("message").textContent =
+          "Cannot reach the server. Retrying...";
+      } finally {
+        setTimeout(updateStatus, 3000);
+      }
+    }
+
+    updateStatus();
+  </script>
 </body>
 </html>
